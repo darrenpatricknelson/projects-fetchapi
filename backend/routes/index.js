@@ -27,10 +27,6 @@ const organizeArray = (a, b) => {
 
 // GET
 router.get('/', (req, res) => {
-  if (content.length < 1) {
-    res.send('Database is currently empty');
-    return;
-  }
   res.json(content);
 });
 
@@ -101,7 +97,7 @@ router.post('/create', (req, res) => {
 
   //   send a json response with a positive message and the existing content
   return res.json({
-    message: `New project added. Task ${id} has been added to your database`,
+    message: `New project added. Task ${newTask.id} has been added to your database`,
     content
   });
 });
@@ -180,10 +176,12 @@ router.delete('/delete/:id', (req, res) => {
     }
   }
 
+  const deleted = JSON.stringify(content.sort(organizeArray), null, 2)
+
   //   write it to the file
   fs.writeFileSync(
     './db.json',
-    JSON.stringify(content.sort(organizeArray), null, 2),
+    deleted,
     (err) => {
       if (err) {
         res.send('Failed to create new project', err);
@@ -195,7 +193,7 @@ router.delete('/delete/:id', (req, res) => {
   //   send a json response with a positive message and the existing content
   return res.json({
     message: `Task ${id} has been deleted from your database`,
-    content
+    content: JSON.parse(deleted)
   });
 });
 

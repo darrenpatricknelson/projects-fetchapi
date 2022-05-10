@@ -16,32 +16,20 @@ const deleteData = async (url) => {
 class DBContent extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      data: props.data,
-      updateData: false,
-      deleteData: false
-    };
     this.handleUpdate = this.handleUpdate.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
   }
 
   handleUpdate(task) {
-    this.setState({
-      updateData: !this.state.updateData
-    });
+    /** @todo */
   }
 
   handleDelete(task) {
-    this.setState({
-      deleteData: !this.state.deleteData
-    });
-
-    deleteData(`/api/delete/${task.id}`);
-    window.location.reload();
+    return this.props.methods.delete(`/api/delete/${task.id}`);
   }
 
   render() {
-    const { data } = this.state;
+    const { data } = this.props;
     return (
       <div className="dbContentOutput">
         <Table striped bordered hover variant="dark">

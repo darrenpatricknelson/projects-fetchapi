@@ -1,16 +1,16 @@
-import React from 'react';
-import '../assests/dbContent.css';
-import UpdateTask from './UpdateTask';
-import DeleteButton from './DeleteButton';
-import { Table, Button } from 'react-bootstrap';
+import React from "react";
+import "../assests/dbContent.css";
+import UpdateTask from "./UpdateTask";
+import DeleteButton from "./DeleteButton";
+import { Table, Button } from "react-bootstrap";
 
-const deleteData = async (url) => {
+const deleteData = async url => {
   return fetch(url, {
-    method: 'DELETE',
+    method: "DELETE",
     headers: {
-      'Content-Type': 'application/json'
-    }
-  }).then((response) => response.json());
+      "Content-Type": "application/json",
+    },
+  }).then(response => response.json());
 };
 
 class DBContent extends React.Component {
@@ -43,7 +43,7 @@ class DBContent extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {data.map((task) => {
+            {data.map(task => {
               return (
                 <tr key={task.id}>
                   <td>{task.id}</td>
@@ -56,7 +56,7 @@ class DBContent extends React.Component {
                       onClick={() => this.handleUpdate(task)}
                     >
                       Update
-                    </Button>{' '}
+                    </Button>{" "}
                     <Button
                       variant="danger"
                       onClick={() => this.handleDelete(task)}

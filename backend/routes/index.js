@@ -24,12 +24,16 @@ const organizeArray = (a, b) => {
 };
 
 // ====>
+// ====>
+// ====>
 
 // GET
 router.get('/', (req, res) => {
   res.json(content);
 });
 
+// ====>
+// ====>
 // =====>
 
 // POST
@@ -42,36 +46,43 @@ router.post('/create', (req, res) => {
   // Since we working with tasks, we will use the task number as the ID
   // the test is to check if an ID was given, if not we will send an explicit request for one
   if (!newTask.id) {
-    res.send('Please add the number of your task as your ID');
-    return;
+    return res.json({
+      message: `Please add the number of your task as your ID`,
+      content,
+      success: false
+    });
   } else {
     //   in this test, I'm just making sure that the ID in our databas does not exist yet
     for (const task of content) {
       if (task.id === newTask.id) {
         //   if the ID does exist, We will send back an object will a message and the specific task
-        res.json({
-          message: 'This task ID already exists',
-          task
+        return res.json({
+          message: `This task number already exists. Please enter a different task.`,
+          content,
+          success: false
         });
-        return;
       }
     }
   }
 
   //   Just like with the ID, we need a title
   if (!newTask.title) {
-    res.send('Please add the title of your task');
-    return;
+    return res.json({
+      message: `Please add the title of your task`,
+      content,
+      success: false
+    });
   }
 
   // this test is more for a personal factor
   // since this app is for me to record and view my HYperionDev task progress
   // I've added this test for progress
   if (!newTask.progress) {
-    res.send(
-      'Please add the progress of your task. This could be: "Not started", "In progress", "Submitted", "Reviewed". If your task has been reviewed, please also add your grade.'
-    );
-    return;
+    return res.json({
+      message: `Please add the progress of your task. This could be: "Not started", "In progress", "Submitted", "Reviewed". If your task has been reviewed, please also add your grade.`,
+      content,
+      success: false
+    });
   }
 
   //   again, since it's personal app, I want to record my grades
@@ -98,10 +109,13 @@ router.post('/create', (req, res) => {
   //   send a json response with a positive message and the existing content
   return res.json({
     message: `New project added. Task ${newTask.id} has been added to your database`,
-    content
+    content,
+    success: true
   });
 });
 
+// ====>
+// ====>
 // ====>
 
 // PUT
@@ -161,6 +175,8 @@ router.put('/update/:id', (req, res) => {
 });
 
 // ====>
+// ====>
+// ====>
 
 // DELETE
 router.delete('/delete/:id', (req, res) => {
@@ -176,19 +192,15 @@ router.delete('/delete/:id', (req, res) => {
     }
   }
 
-  const deleted = JSON.stringify(content.sort(organizeArray), null, 2)
+  const deleted = JSON.stringify(content.sort(organizeArray), null, 2);
 
   //   write it to the file
-  fs.writeFileSync(
-    './db.json',
-    deleted,
-    (err) => {
-      if (err) {
-        res.send('Failed to create new project', err);
-        return;
-      }
+  fs.writeFileSync('./db.json', deleted, (err) => {
+    if (err) {
+      res.send('Failed to create new project', err);
+      return;
     }
-  );
+  });
 
   //   send a json response with a positive message and the existing content
   return res.json({
@@ -197,6 +209,8 @@ router.delete('/delete/:id', (req, res) => {
   });
 });
 
+// ====>
+// ====>
 // =====>
 
 // export

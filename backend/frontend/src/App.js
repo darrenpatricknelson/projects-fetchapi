@@ -1,20 +1,19 @@
-import React from "react";
-import "./App.css";
-import DBContent from "./components/DBContent.js";
-import AddNewTask from "./components/AddNewTask.js";
-import { Button } from "react-bootstrap";
+import React from 'react';
+import './App.css';
+import DBContent from './components/DBContent.js';
+import AddNewTask from './components/AddNewTask.js';
+import { Button } from 'react-bootstrap';
 
 export const fetchTaskData = async () => {
-  const response = await fetch("/api");
+  const response = await fetch('/api');
   return new Promise(async (resolve, reject) => {
     if (response.ok) {
-      // console.log({response})
+      console.log({ response });
       try {
         const data = await response.json();
-        console.log(data)
         resolve(data);
       } catch (err) {
-        console.log({err})
+        console.log({ err });
       }
     }
 
@@ -23,7 +22,7 @@ export const fetchTaskData = async () => {
 };
 
 export const addNewTaskData = async () => {
-  const response = await fetch("/api/create");
+  const response = await fetch('/api/create');
   // create function to fetch data
 };
 
@@ -35,7 +34,7 @@ class App extends React.Component {
       isLoaded: false,
       addNewTask: false,
       updateTask: false,
-      data: [],
+      data: []
     };
     this.handleNewTask = this.handleNewTask.bind(this);
     this.handleUpdateTask = this.handleUpdateTask.bind(this);
@@ -44,10 +43,10 @@ class App extends React.Component {
 
   async delete(url) {
     return fetch(url, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
-        "Content-Type": "application/json",
-      },
+        'Content-Type': 'application/json'
+      }
     })
       .then((response) => response.json())
       .then((data) =>
@@ -63,27 +62,28 @@ class App extends React.Component {
         this.setState({
           isLoaded: true,
           data: data,
-          error: false,
+          error: false
         })
       )
       .catch((error) => {
+        console.log(error);
         this.setState({
           isLoaded: true,
-          error: error,
+          error: error
         });
       });
   }
 
   handleNewTask() {
     this.setState({
-      addNewTask: !this.state.addNewTask,
+      addNewTask: !this.state.addNewTask
     });
     this.componentDidMount();
   }
 
   handleUpdateTask() {
     this.setState({
-      updateTask: !this.state.updateTask,
+      updateTask: !this.state.updateTask
     });
   }
 
@@ -117,7 +117,10 @@ class App extends React.Component {
               <AddNewTask handleNewTask={this.handleNewTask} />
             ) : (
               <>
-                <DBContent data={this.state.data} methods={{ delete: this.delete }} />
+                <DBContent
+                  data={this.state.data}
+                  methods={{ delete: this.delete }}
+                />
                 <Button variant="success" onClick={this.handleNewTask}>
                   Add new task
                 </Button>

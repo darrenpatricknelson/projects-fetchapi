@@ -1,14 +1,14 @@
-import React from "react";
-import "../assests/addNewTask.css";
-import { Table, Button } from "react-bootstrap";
+import React from 'react';
+import '../assests/addNewTask.css';
+import { Table, Button } from 'react-bootstrap';
 
 const postData = (url, data) => {
   return fetch(url, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json'
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(data)
   })
     .then((response) => response.json())
     .catch((error) => console.error(error));
@@ -16,42 +16,35 @@ const postData = (url, data) => {
 
 export default function AddNewTask(props) {
   const handleNewTask = props.handleNewTask;
+
   const getDataFromForm = () => {
-    const errorOutput = document.getElementById("errorOutput");
-    errorOutput.innerHTML = "";
+    const errorOutput = document.getElementById('errorOutput');
+    errorOutput.innerHTML = '';
 
-    const taskNumber = document.getElementById("taskNumber").value;
-    const taskName = document.getElementById("taskName").value;
-    const taskProgress = document.getElementById("progress").value;
-    const taskGrade = document.getElementById("taskGrade").value;
-
-    if (!taskNumber) {
-      errorOutput.innerHTML = "Please enter a valid task number ";
-    }
-
-    if (!taskName) {
-      errorOutput.innerHTML = "Please enter a valid task name ";
-    }
-
-    if (taskProgress === "Reviewed") {
-      if (!taskGrade) {
-        errorOutput.innerHTML = "Please enter a valid task grade ";
-      }
-    }
+    const taskNumber = document.getElementById('taskNumber').value;
+    const taskName = document.getElementById('taskName').value;
+    const taskProgress = document.getElementById('progress').value;
+    const taskGrade = document.getElementById('taskGrade').value;
 
     //   create a data object
     const data = {
       id: Number(taskNumber),
       title: taskName,
       progress: taskProgress,
-      grade: Number(taskGrade),
+      grade: Number(taskGrade)
     };
 
-    postData("api/create", data)
-      .then((data) => console.log(JSON.stringify(data)))
+    postData('api/create', data)
+      .then((data) => {
+        if (!data.success) {
+          errorOutput.innerHTML = data.message;
+          return;
+        } else {
+          errorOutput.innerHTML = '';
+          handleNewTask();
+        }
+      })
       .catch((error) => console.error(error));
-
-    handleNewTask();
   };
 
   return (

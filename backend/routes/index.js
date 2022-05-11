@@ -1,10 +1,10 @@
 // requires
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const fs = require('fs');
+const fs = require("fs");
 
 // create a global variable for the content being read
-const content = JSON.parse(fs.readFileSync('./db.json'));
+const content = JSON.parse(fs.readFileSync("./db.json"));
 // I'm going to go one step further and sort these out
 // i noticed that if task 18 exist in the array
 // and i add task 17
@@ -28,7 +28,7 @@ const organizeArray = (a, b) => {
 // ====>
 
 // GET
-router.get('/', (req, res) => {
+router.get("/", (req, res) => {
   res.json(content);
 });
 
@@ -37,7 +37,7 @@ router.get('/', (req, res) => {
 // =====>
 
 // POST
-router.post('/create', (req, res) => {
+router.post("/create", (req, res) => {
   // we will use the request body to assign a new object
   const newTask = Object.assign(req.body);
 
@@ -49,7 +49,7 @@ router.post('/create', (req, res) => {
     return res.json({
       message: `Please add the number of your task as your ID`,
       content,
-      success: false
+      success: false,
     });
   } else {
     //   in this test, I'm just making sure that the ID in our databas does not exist yet
@@ -59,7 +59,7 @@ router.post('/create', (req, res) => {
         return res.json({
           message: `This task number already exists. Please enter a different task.`,
           content,
-          success: false
+          success: false,
         });
       }
     }
@@ -70,7 +70,7 @@ router.post('/create', (req, res) => {
     return res.json({
       message: `Please add the title of your task`,
       content,
-      success: false
+      success: false,
     });
   }
 
@@ -81,14 +81,14 @@ router.post('/create', (req, res) => {
     return res.json({
       message: `Please add the progress of your task. This could be: "Not started", "In progress", "Submitted", "Reviewed". If your task has been reviewed, please also add your grade.`,
       content,
-      success: false
+      success: false,
     });
   }
 
   //   again, since it's personal app, I want to record my grades
   // if no grade was given, it will be an empty string
   if (!newTask.grade) {
-    newTask.grade = '';
+    newTask.grade = "";
   }
 
   //   push the newTask to the content variable we created above
@@ -96,21 +96,21 @@ router.post('/create', (req, res) => {
 
   //   write it to the file
   fs.writeFileSync(
-    './db.json',
+    "./db.json",
     JSON.stringify(content.sort(organizeArray), null, 2),
-    (err) => {
+    err => {
       if (err) {
-        res.send('Failed to create new project', err);
+        res.send("Failed to create new project", err);
         return;
       }
-    }
+    },
   );
 
   //   send a json response with a positive message and the existing content
   return res.json({
     message: `New project added. Task ${newTask.id} has been added to your database`,
     content,
-    success: true
+    success: true,
   });
 });
 
@@ -119,7 +119,7 @@ router.post('/create', (req, res) => {
 // ====>
 
 // PUT
-router.put('/update/:id', (req, res) => {
+router.put("/update/:id", (req, res) => {
   // create a numbered id variable since it returns a string from the request
   const id = Number(req.params.id);
   const newTask = Object.assign(req.body);
@@ -131,13 +131,13 @@ router.put('/update/:id', (req, res) => {
       // this is going to get a bit ugly but what I'm doing is checking if an entry field exists
       // if it exists, then update the field
       // if it does exist, then do nothing
-      if (typeof newTask.title !== 'undefined') {
+      if (typeof newTask.title !== "undefined") {
         content[i].title = newTask.title;
       }
-      if (typeof newTask.progress !== 'undefined') {
+      if (typeof newTask.progress !== "undefined") {
         content[i].progress = newTask.progress;
       }
-      if (typeof newTask.grade !== 'undefined') {
+      if (typeof newTask.grade !== "undefined") {
         content[i].grade = newTask.grade;
       }
     }
@@ -145,14 +145,14 @@ router.put('/update/:id', (req, res) => {
 
   //   write it to the file
   fs.writeFileSync(
-    './db.json',
+    "./db.json",
     JSON.stringify(content.sort(organizeArray), null, 2),
-    (err) => {
+    err => {
       if (err) {
-        res.send('Failed to create new project', err);
+        res.send("Failed to create new project", err);
         return;
       }
-    }
+    },
   );
 
   //   in my response, I want to return JUST the object that was updated
@@ -170,7 +170,7 @@ router.put('/update/:id', (req, res) => {
   //   send a json response with a positive message and the existing content
   return res.json({
     message: `Task ${id} has been updated in your database`,
-    content: updatedTask()
+    content: updatedTask(),
   });
 });
 
@@ -179,7 +179,7 @@ router.put('/update/:id', (req, res) => {
 // ====>
 
 // DELETE
-router.delete('/delete/:id', (req, res) => {
+router.delete("/delete/:id", (req, res) => {
   // create the ID
   const id = Number(req.params.id);
 
@@ -195,9 +195,9 @@ router.delete('/delete/:id', (req, res) => {
   const deleted = JSON.stringify(content.sort(organizeArray), null, 2);
 
   //   write it to the file
-  fs.writeFileSync('./db.json', deleted, (err) => {
+  fs.writeFileSync("./db.json", deleted, err => {
     if (err) {
-      res.send('Failed to create new project', err);
+      res.send("Failed to create new project", err);
       return;
     }
   });
@@ -205,7 +205,7 @@ router.delete('/delete/:id', (req, res) => {
   //   send a json response with a positive message and the existing content
   return res.json({
     message: `Task ${id} has been deleted from your database`,
-    content: JSON.parse(deleted)
+    content: JSON.parse(deleted),
   });
 });
 

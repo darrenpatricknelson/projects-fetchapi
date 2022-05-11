@@ -1,15 +1,15 @@
-import React from 'react';
-import '../assests/addNewTask.css';
-import { Table, Button } from 'react-bootstrap';
+import React from "react";
+import "../assests/addNewTask.css";
+import { Table, Button } from "react-bootstrap";
 
 const postData = (url, data) => {
   return fetch(url, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(data)
-  }).then((response) => response.json());
+    body: JSON.stringify(data),
+  }).then(response => response.json());
 };
 
 export default function AddNewTask(props) {
@@ -17,25 +17,25 @@ export default function AddNewTask(props) {
   const handleNewTask = props.handleNewTask;
 
   const getDataFromForm = () => {
-    const errorOutput = document.getElementById('errorOutput');
-    errorOutput.innerHTML = '';
+    const errorOutput = document.getElementById("errorOutput");
+    errorOutput.innerHTML = "";
 
-    const taskNumber = document.getElementById('taskNumber').value;
-    const taskName = document.getElementById('taskName').value;
-    const taskProgress = document.getElementById('progress').value;
-    const taskGrade = document.getElementById('taskGrade').value;
+    const taskNumber = document.getElementById("taskNumber").value;
+    const taskName = document.getElementById("taskName").value;
+    const taskProgress = document.getElementById("progress").value;
+    const taskGrade = document.getElementById("taskGrade").value;
 
     if (!taskNumber) {
-      errorOutput.innerHTML = 'Please enter a valid task number ';
+      errorOutput.innerHTML = "Please enter a valid task number ";
     }
 
     if (!taskName) {
-      errorOutput.innerHTML = 'Please enter a valid task name ';
+      errorOutput.innerHTML = "Please enter a valid task name ";
     }
 
-    if (taskProgress === 'Reviewed') {
+    if (taskProgress === "Reviewed") {
       if (!taskGrade) {
-        errorOutput.innerHTML = 'Please enter a valid task grade ';
+        errorOutput.innerHTML = "Please enter a valid task grade ";
       }
     }
 
@@ -44,12 +44,12 @@ export default function AddNewTask(props) {
       id: Number(taskNumber),
       title: taskName,
       progress: taskProgress,
-      grade: Number(taskGrade)
+      grade: Number(taskGrade),
     };
 
-    postData('api/create', data)
-      .then((data) => console.log(JSON.stringify(data)))
-      .catch((error) => console.error(error));
+    postData("api/create", data)
+      .then(data => console.log(JSON.stringify(data)))
+      .catch(error => console.error(error));
 
     handleNewTask();
   };

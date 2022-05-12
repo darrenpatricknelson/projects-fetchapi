@@ -1,7 +1,7 @@
 import React from "react";
 import "../assests/dbContent.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 import UpdateTask from "./UpdateTask";
-import DeleteButton from "./DeleteButton";
 import { Table, Button } from "react-bootstrap";
 
 const deleteData = async url => {
@@ -16,12 +16,19 @@ const deleteData = async url => {
 class DBContent extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      userUpdatingTask: false,
+      updateTaskInfo: [],
+    };
     this.handleUpdate = this.handleUpdate.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
   }
 
   handleUpdate(task) {
-    /** @todo */
+    this.setState({
+      userUpdatingTask: !this.state.userUpdatingTask,
+      updateTaskInfo: task,
+    });
   }
 
   handleDelete(task) {

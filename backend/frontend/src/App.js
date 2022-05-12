@@ -67,7 +67,6 @@ class App extends React.Component {
         }),
       )
       .catch(error => {
-        console.log(error);
         this.setState({
           isLoaded: true,
           error: error,
@@ -75,15 +74,16 @@ class App extends React.Component {
       });
   }
 
-  setData(data) {
-    this.setState({ data });
-  }
-
   handleNewTask() {
     this.setState({
       addNewTask: !this.state.addNewTask,
     });
-    // this.componentDidMount();
+  }
+
+  setData(newData) {
+    this.setState({
+      data: newData,
+    });
   }
 
   handleUpdateTask() {

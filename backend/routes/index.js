@@ -83,6 +83,14 @@ router.post("/create", (req, res) => {
       content,
       success: false,
     });
+  } else if (newTask.progress === "Reviewed") {
+    if (!newTask.grade) {
+      return res.json({
+        message: `Your task has been reviewed, please add the grade.`,
+        content,
+        success: false,
+      });
+    }
   }
 
   //   again, since it's personal app, I want to record my grades

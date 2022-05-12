@@ -1,9 +1,14 @@
 import React from "react";
 import "./App.css";
 import DBContent from "./components/DBContent.js";
-import AddNewTask from "./components/AddNewTask.js";
 import { Button } from "react-bootstrap";
 
+/* 
+# fetchTaskData fucntion
+This function is a 'GET' request made to the api
+It returns all the information on db.json file 
+We will display that information on our website
+*/
 export const fetchTaskData = async () => {
   const response = await fetch("/api");
   return new Promise(async (resolve, reject) => {
@@ -20,39 +25,22 @@ export const fetchTaskData = async () => {
   });
 };
 
-export const addNewTaskData = async () => {
-  const response = await fetch("/api/create");
-  // create function to fetch data
-};
-
+/* 
+# App component 
+Contains all the information and state used to display information on our website
+ */
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       error: false,
       isLoaded: false,
-      addNewTask: false,
       updateTask: false,
       data: [],
     };
     this.handleUpdateTask = this.handleUpdateTask.bind(this);
     this.setData = this.setData.bind(this);
-    this.delete = this.delete.bind(this);
-  }
-
-  async delete(url) {
-    return fetch(url, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then(response => response.json())
-      .then(data =>
-        this.setState({
-          data: data.content,
-        }),
-      );
+    this.deleteData = this.deleteData.bind(this);
   }
 
   componentDidMount() {
@@ -72,6 +60,32 @@ class App extends React.Component {
       });
   }
 
+  /* 
+  # deleteData fucntion
+  This function is a 'DELETE' request made to our api when the user clicks the delete button 
+  */
+  async deleteData(url) {
+    return fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(response => response.json())
+      .then(data =>
+        this.setState({
+          data: data.content,
+        }),
+      );
+  }
+
+  /* 
+  # setData fucntion
+  This fucntion is used to update the class app state when the user adds a new task
+  This will is being called in the DBContent component 
+  When this function is called, it will update the sate of the app component which will trigger a re-render
+  The newData will then be displayed in the table
+  */
   setData(newData) {
     this.setState({
       data: newData,
@@ -85,7 +99,12 @@ class App extends React.Component {
   }
 
   render() {
+    // creating shorthand variables from the state property
     const { error, isLoaded, data, addNewTask } = this.state;
+
+    // if there is an error, handle it
+    // if the data is still loading, let the user know
+    // if the content is loaded and there are no errors, display the information
     if (error) {
       return (
         <div className="App">
@@ -108,20 +127,30 @@ class App extends React.Component {
         <div className="App">
           <header className="App-header">
             <h1>HyperionDev dashboard replica</h1>
-            {data.length < 1 ? (
-              <h2>Your database is empty</h2>
-            ) : addNewTask ? (
-              <AddNewTask
-                handleNewTask={this.handleNewTask}
-                setData={this.setData}
-              />
-            ) : (
-              <DBContent
-                data={this.state.data}
-                methods={{ delete: this.delete }}
-                setData={this.setData}
-              />
+
+            {/* The following line will only be display if the database is empty */}
+            {data.length < 1 && (
+              <>
+                <h2>Your database is empty</h2>
+                <h5>Add a new task</h5>
+              </>
             )}
+
+            {/* 
+              DBContent will handle the creating of the table 
+              This table will display information about the table, such as the task number and name 
+              It will also have a row specifically for new tasks
+              A few props will be passed through:
+                - data: the data we received from our 'GET' api request
+                - methods: Created an object that will contain multiple functions that can be used
+                  - deleteData and setData 
+                  - TODO: updateData
+            */}
+
+            <DBContent
+              data={this.state.data}
+              methods={{ deleteData: this.deleteData, setData: this.setData }}
+            />
           </header>
         </div>
       );

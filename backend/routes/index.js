@@ -165,20 +165,11 @@ router.put("/update/:id", (req, res) => {
 
   //   in my response, I want to return JUST the object that was updated
   // So I'm going to created a function to do just that
-  const updatedTask = () => {
-    //   loop over existing array
-    for (let i = 0; i < content.length; i++) {
-      // check if the ID matches and existing ID
-      if (content[i].id === id) {
-        return content[i];
-      }
-    }
-  };
 
   //   send a json response with a positive message and the existing content
   return res.json({
     message: `Task ${id} has been updated in your database`,
-    content: updatedTask(),
+    content,
   });
 });
 

@@ -4,6 +4,8 @@ import "../assests/dbContent.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import UpdateTask from "./UpdateTask";
 import { Table, Button } from "react-bootstrap";
+import TableRow from "./TableRow";
+import { STATUSES } from "../utils/constants";
 
 /* 
 # postData function
@@ -25,16 +27,6 @@ const postData = (url, data) => {
 };
 
 /* 
-# statuses
-statuses is just an array of progress points 
-This array will be used wehn creating the table
-The loop in the table will output these progress points as options
-Instead of copy and pasting options, we will use a loop instead
-Easier to maintain and scale up or down
- */
-const statuses = ["Not started", "In progress", "Submitted", "Reviewed"];
-
-/* 
 # DBContent component
 We will keep it as a function and not a class inorder to use react hooks
 */
@@ -53,7 +45,7 @@ export default function DBContent(props) {
   */
   const [id, setId] = useState("");
   const [title, setTitle] = useState("");
-  const [progress, setProgress] = useState(statuses[0]);
+  const [progress, setProgress] = useState(STATUSES[0]);
   const [grade, setGrade] = useState("");
   const [error, setError] = useState();
 
@@ -102,7 +94,7 @@ export default function DBContent(props) {
         // This will also clear the input fields of the addNewTask form
         setId("");
         setTitle("");
-        setProgress(statuses[0]);
+        setProgress(STATUSES[0]);
         setGrade("");
       })
       .catch(error => console.error(error));
@@ -144,26 +136,12 @@ export default function DBContent(props) {
             <tbody>
               {data.map(task => {
                 return (
-                  <tr key={task.id}>
-                    <td>{task.id}</td>
-                    <td>{task.title}</td>
-                    <td>{task.progress}</td>
-                    <td>{task.grade}</td>
-                    <td className="tableButtons">
-                      <Button
-                        variant="warning"
-                        // onClick={() => handleUpdate(task)}
-                      >
-                        Update
-                      </Button>{" "}
-                      <Button
-                        variant="danger"
-                        onClick={() => handleDelete(task)}
-                      >
-                        Delete
-                      </Button>
-                    </td>
-                  </tr>
+                  <TableRow
+                    key={task.id}
+                    task={task}
+                    handleDelete={handleDelete}
+                    setData={setData}
+                  />
                 );
               })}
 
@@ -185,11 +163,11 @@ export default function DBContent(props) {
                 </td>
                 <td>
                   <select
-                    value={statuses[0]}
+                    value={STATUSES[0]}
                     name="progress"
                     onChange={evt => setProgress(evt.target.value)}
                   >
-                    {statuses.map(status => (
+                    {STATUSES.map(status => (
                       <option key={status} value={status}>
                         {status}
                       </option>

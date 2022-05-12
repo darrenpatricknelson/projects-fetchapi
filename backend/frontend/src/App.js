@@ -8,7 +8,6 @@ export const fetchTaskData = async () => {
   const response = await fetch("/api");
   return new Promise(async (resolve, reject) => {
     if (response.ok) {
-      console.log({ response });
       try {
         const data = await response.json();
         resolve(data);
@@ -36,7 +35,6 @@ class App extends React.Component {
       updateTask: false,
       data: [],
     };
-    this.handleNewTask = this.handleNewTask.bind(this);
     this.handleUpdateTask = this.handleUpdateTask.bind(this);
     this.setData = this.setData.bind(this);
     this.delete = this.delete.bind(this);
@@ -72,12 +70,6 @@ class App extends React.Component {
           error: error,
         });
       });
-  }
-
-  handleNewTask() {
-    this.setState({
-      addNewTask: !this.state.addNewTask,
-    });
   }
 
   setData(newData) {
@@ -124,15 +116,11 @@ class App extends React.Component {
                 setData={this.setData}
               />
             ) : (
-              <>
-                <DBContent
-                  data={this.state.data}
-                  methods={{ delete: this.delete }}
-                />
-                <Button variant="success" onClick={this.handleNewTask}>
-                  Add new task
-                </Button>
-              </>
+              <DBContent
+                data={this.state.data}
+                methods={{ delete: this.delete }}
+                setData={this.setData}
+              />
             )}
           </header>
         </div>

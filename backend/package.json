@@ -17,5 +17,10 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.16"
-  }
+  },
+  "engines": {
+    "node": "16.4.2",
+    "npm": "7.18.1"
+  },
+  "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
 }

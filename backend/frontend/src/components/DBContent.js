@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 import "../assests/dbContent.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import UpdateTask from "./UpdateTask";
 import { Table, Button } from "react-bootstrap";
 import TableRow from "./TableRow";
 import { STATUSES } from "../utils/constants";

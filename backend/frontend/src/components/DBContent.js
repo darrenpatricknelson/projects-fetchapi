@@ -7,7 +7,7 @@ import TableRow from "./TableRow";
 import { STATUSES } from "../utils/constants";
 
 /* 
-# postData function
+* postData function
 postData fucntion is our 'POST' api request
 When the user adds a new task and clicks on the add new task button
 the * handleSubmit function will run
@@ -26,7 +26,7 @@ const postData = (url, data) => {
 };
 
 /* 
-# DBContent component
+* DBContent component
 We will keep it as a function and not a class inorder to use react hooks
 */
 export default function DBContent(props) {
@@ -50,7 +50,7 @@ export default function DBContent(props) {
   const [success, setSuccess] = useState();
 
   /* 
-  # handleSubmit fucntion
+  * handleSubmit fucntion
   When the user adds a new task and clicks on the add new task button, this function will run
   This function will take the information from the form, use the useState hook to set variable values 
   and and with those values, creating a data object that we will send to the api in our 'POST' request
@@ -109,7 +109,7 @@ export default function DBContent(props) {
   };
 
   /* 
-  # handleDelete
+  * handleDelete
   This was the simplest function to write
   It's a simple 'DELETE' made to the api
   It takes the task in as an argument 
@@ -120,7 +120,7 @@ export default function DBContent(props) {
   };
 
   /* 
-  # Return
+  * Return
   We will return a simple table with dynamic inputs and buttons
   The user will be able to add, update and delete tasks all infront of their eyes
   */
@@ -135,7 +135,7 @@ export default function DBContent(props) {
         <Table striped bordered hover variant="dark">
           <thead>
             <tr>
-              <th>Task #</th>
+              <th>Task *</th>
               <th>Task Name</th>
               <th>Progress</th>
               <th>Grade</th>

@@ -4,7 +4,7 @@ import DBContent from "./components/DBContent.js";
 import { Button } from "react-bootstrap";
 
 /* 
-# fetchTaskData fucntion
+* fetchTaskData fucntion
 This function is a 'GET' request made to the api
 It returns all the information on db.json file 
 We will display that information on our website
@@ -26,7 +26,7 @@ export const fetchTaskData = async () => {
 };
 
 /* 
-# App component 
+* App component 
 Contains all the information and state used to display information on our website
  */
 class App extends React.Component {
@@ -61,7 +61,7 @@ class App extends React.Component {
   }
 
   /* 
-  # deleteData fucntion
+  * deleteData fucntion
   This function is a 'DELETE' request made to our api when the user clicks the delete button 
   */
   async deleteData(url) {
@@ -80,7 +80,7 @@ class App extends React.Component {
   }
 
   /* 
-  # setData fucntion
+  * setData fucntion
   This fucntion is used to update the class app state when the user adds a new task
   This will is being called in the DBContent component 
   When this function is called, it will update the sate of the app component which will trigger a re-render

@@ -3,18 +3,29 @@ import { Button } from "react-bootstrap";
 import { STATUSES } from "../utils/constants";
 
 export default function TableRow(props) {
+  // shorthand variables taken from props and props.methods
   const { handleDelete, task } = props;
   const { setData, setError, setSuccess } = props.methods;
 
+  // will use this state when the user is busy editing
+  // when this state is false, the table fields will change to inpuit fields and the user will be able to update their tasks
   const [isReadOnly, setIsReadOnly] = useState(true);
 
+  // using hooks to update state
+  // these hook functions will be used in the inputs onChange
   const [id, setId] = useState(task.id);
   const [title, setTitle] = useState(task.title);
   const [progress, setProgress] = useState(task.progress);
   const [grade, setGrade] = useState(task.grade);
 
-  // const [error, setError] = useState();
-
+  /* 
+  * handleUpdate fucntion
+  Once the updates his/her information, this function will run
+  it will send a "PUT" request to the api
+  the api will update our file and reload a new payload
+  that payload will update the state of our app.js
+  Once that state changes, the app will re-render will the fresh content
+  */
   const handleUpdate = () => {
     fetch(`/api/update/${id}`, {
       method: "PUT",
@@ -72,6 +83,10 @@ export default function TableRow(props) {
         <span>{id}</span>
       </td>
       <td>
+        {/* 
+        if isReadOnly is set to true, only readOnly information will display
+        if isReadOnly is set to false, the information will be put into inputs and the user will be able to update their information
+       */}
         {isReadOnly ? (
           <span>{title}</span>
         ) : (
@@ -111,9 +126,14 @@ export default function TableRow(props) {
       </td>
       <td className="tableButtons">
         {isReadOnly ? (
-          <Button variant="warning" onClick={() => setIsReadOnly(false)}>
-            Update
-          </Button>
+          <>
+            {/* 
+            This button changes the state of isReadOnly
+           */}
+            <Button variant="warning" onClick={() => setIsReadOnly(false)}>
+              Update
+            </Button>
+          </>
         ) : (
           <Button onClick={handleUpdate} variant="success">
             Save

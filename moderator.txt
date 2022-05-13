@@ -1,0 +1,17 @@
+This file is for the moderator: 
+
+Hi
+
+Just wanted to point out a few things.
+#1. 
+    - The task is meant to be about projects that I've built
+    - In my case, it is, just changed the word 'projects' to 'tasks'
+
+#2 
+    - Some of the concepts, build patterns and solutions to issues I had might seem a bit too advanced for myself, since I am still learning/studying 
+    - They are a bit advanced. That's because I had some help.
+
+    _ REFERENCES _
+    - My mentor helped me. He suggested a few build and design patterns that have been implemented.
+    - Some of the error handling is also inspired by him
+    - It is, however, only small contributions and this projects is still mine. I take full responsibility for it.

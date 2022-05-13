@@ -140,9 +140,38 @@ router.put("/update/:id", (req, res) => {
       // if it exists, then update the field
       // if it does exist, then do nothing
       if (typeof newTask.title !== "undefined") {
+        // need to test if the user did'nt delete the existing title
+        // they only meant to update
+        if (!newTask.title) {
+          return res.json({
+            message: `Please add the title of your task`,
+            content,
+            success: false,
+          });
+        }
+
+        // if successful, update in the array
         content[i].title = newTask.title;
       }
       if (typeof newTask.progress !== "undefined") {
+        // test for progress
+        if (!newTask.progress) {
+          return res.json({
+            message: `Please add the progress of your task. This could be: "Not started", "In progress", "Submitted", "Reviewed". If your task has been reviewed, please also add your grade.`,
+            content,
+            success: false,
+          });
+        } else if (newTask.progress === "Reviewed") {
+          if (!newTask.grade) {
+            return res.json({
+              message: `Your task has been reviewed, please add the grade.`,
+              content,
+              success: false,
+            });
+          }
+        }
+
+        // if successful, update in the array
         content[i].progress = newTask.progress;
       }
       if (typeof newTask.grade !== "undefined") {
@@ -170,6 +199,7 @@ router.put("/update/:id", (req, res) => {
   return res.json({
     message: `Task ${id} has been updated in your database`,
     content,
+    success: true,
   });
 });
 
@@ -205,6 +235,7 @@ router.delete("/delete/:id", (req, res) => {
   return res.json({
     message: `Task ${id} has been deleted from your database`,
     content: JSON.parse(deleted),
+    success: true,
   });
 });
 

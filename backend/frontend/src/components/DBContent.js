@@ -47,6 +47,7 @@ export default function DBContent(props) {
   const [progress, setProgress] = useState(STATUSES[0]);
   const [grade, setGrade] = useState("");
   const [error, setError] = useState();
+  const [success, setSuccess] = useState();
 
   /* 
   # handleSubmit fucntion
@@ -79,7 +80,15 @@ export default function DBContent(props) {
         }
 
         // setting the error to null since it passed our data.success check
+        // this will clear the error message
+        // will also set a success message
+        // that will clear after 2 seconds
         setError(null);
+        setSuccess(data.message);
+        setTimeout(() => {
+          setSuccess("");
+        }, 3000);
+
         /* 
         ! setData
         This is a function in our app component 
@@ -111,88 +120,90 @@ export default function DBContent(props) {
   };
 
   /* 
-  TODO: add comments 
+  # Return
+  We will return a simple table with dynamic inputs and buttons
+  The user will be able to add, update and delete tasks all infront of their eyes
   */
-  if (!userIsUpdatingTask) {
-    return (
-      <div className="dbContentOutput">
-        <form
-          onSubmit={evt => {
-            evt.preventDefault();
-            handleSubmit();
-          }}
-        >
-          <Table striped bordered hover variant="dark">
-            <thead>
-              <tr>
-                <th>Task #</th>
-                <th>Task Name</th>
-                <th>Progress</th>
-                <th>Grade</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map(task => {
-                return (
-                  <TableRow
-                    key={task.id}
-                    task={task}
-                    handleDelete={handleDelete}
-                    setData={setData}
-                  />
-                );
-              })}
+  return (
+    <div className="dbContentOutput">
+      <form
+        onSubmit={evt => {
+          evt.preventDefault();
+          handleSubmit();
+        }}
+      >
+        <Table striped bordered hover variant="dark">
+          <thead>
+            <tr>
+              <th>Task #</th>
+              <th>Task Name</th>
+              <th>Progress</th>
+              <th>Grade</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map(task => {
+              return (
+                <TableRow
+                  key={task.id}
+                  task={task}
+                  handleDelete={handleDelete}
+                  methods={{
+                    setData: setData,
+                    setError: setError,
+                    setSuccess: setSuccess,
+                  }}
+                />
+              );
+            })}
 
-              <tr>
-                <td>
-                  <input
-                    value={id}
-                    onChange={evt => setId(evt.target.value)}
-                    placeholder="Enter your task number"
-                  />
-                  {}
-                </td>
-                <td>
-                  <input
-                    value={title}
-                    onChange={evt => setTitle(evt.target.value)}
-                    placeholder="Enter your task name"
-                  />
-                </td>
-                <td>
-                  <select
-                    value={STATUSES[0]}
-                    name="progress"
-                    onChange={evt => setProgress(evt.target.value)}
-                  >
-                    {STATUSES.map(status => (
-                      <option key={status} value={status}>
-                        {status}
-                      </option>
-                    ))}
-                  </select>
-                </td>
-                <td>
-                  <input
-                    value={grade}
-                    onChange={evt => setGrade(evt.target.value)}
-                    placeholder="If graded, enter the grade"
-                  />
-                </td>
-                <td>
-                  <Button type="submit" variant="success">
-                    Add new task
-                  </Button>
-                </td>
-              </tr>
-            </tbody>
-          </Table>
-          <div id="errorOutput">{error}</div>
-        </form>
-      </div>
-    );
-  } else {
-    return "Hello";
-  }
+            <tr>
+              <td>
+                <input
+                  value={id}
+                  onChange={evt => setId(evt.target.value)}
+                  placeholder="Enter your task number"
+                />
+                {}
+              </td>
+              <td>
+                <input
+                  value={title}
+                  onChange={evt => setTitle(evt.target.value)}
+                  placeholder="Enter your task name"
+                />
+              </td>
+              <td>
+                <select
+                  name="progress"
+                  onChange={evt => setProgress(evt.target.value)}
+                >
+                  {STATUSES.map(status => (
+                    <option key={status} value={status}>
+                      {status}
+                    </option>
+                  ))}
+                </select>
+              </td>
+              <td>
+                <input
+                  value={grade}
+                  onChange={evt => setGrade(evt.target.value)}
+                  placeholder="Enter the grade"
+                />
+              </td>
+              <td>
+                <Button type="submit" variant="success">
+                  Add new task
+                </Button>
+              </td>
+            </tr>
+          </tbody>
+        </Table>
+        <div id="errorOutput">{error}</div>
+        <div id="successOutput">{success}</div>
+      </form>
+    </div>
+  );
 }

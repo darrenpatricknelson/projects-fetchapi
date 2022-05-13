@@ -3,7 +3,8 @@ import { Button } from "react-bootstrap";
 import { STATUSES } from "../utils/constants";
 
 export default function TableRow(props) {
-  const { handleDelete, task, setData } = props;
+  const { handleDelete, task } = props;
+  const { setData, setError, setSuccess } = props.methods;
 
   const [isReadOnly, setIsReadOnly] = useState(true);
 
@@ -12,7 +13,7 @@ export default function TableRow(props) {
   const [progress, setProgress] = useState(task.progress);
   const [grade, setGrade] = useState(task.grade);
 
-  const [error, setError] = useState();
+  // const [error, setError] = useState();
 
   const handleUpdate = () => {
     fetch(`/api/update/${id}`, {
@@ -29,8 +30,35 @@ export default function TableRow(props) {
     })
       .then(response => response.json())
       .then(data => {
+        /* 
+        ! data.success
+        In my response object from the api, there is a success key
+        If there is any error, that success will be set to false
+        If that success is set to false, this if statement will run its block of code
+        The error message will be displayed to the user and the user can quickly correct their mistake
+        */
+        if (!data.success) {
+          setError(data.message);
+          return;
+        }
+
+        // setting the error to null since it passed our data.success check
+        // this will clear the erro message
+        setError(null);
+        setSuccess(data.message);
+        setTimeout(() => {
+          setSuccess("");
+        }, 3000);
+
+        /* 
+        ! setData
+        This is a function in our app component 
+        This function will pass the new data/ content through to tour app component
+        Which will them update it's state 
+        triggering a re-render
+        */
         setData(data.content);
-        setIsReadOnly(true)
+        setIsReadOnly(true);
       })
       .catch(err => {
         setError(err);
@@ -41,15 +69,7 @@ export default function TableRow(props) {
   return (
     <tr>
       <td>
-        {isReadOnly ? (
-          <span>{id}</span>
-        ) : (
-          <input
-            type="text"
-            value={id}
-            onChange={evt => setId(evt.target.value)}
-          ></input>
-        )}
+        <span>{id}</span>
       </td>
       <td>
         {isReadOnly ? (
@@ -91,10 +111,7 @@ export default function TableRow(props) {
       </td>
       <td className="tableButtons">
         {isReadOnly ? (
-          <Button
-            variant="warning"
-            onClick={() => setIsReadOnly(false)}
-          >
+          <Button variant="warning" onClick={() => setIsReadOnly(false)}>
             Update
           </Button>
         ) : (

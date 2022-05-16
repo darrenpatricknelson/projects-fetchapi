@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import "../assests/dbContent.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Table, Button } from "react-bootstrap";
-import TableRow from "./TableRow";
-import { STATUSES } from "../utils/constants";
+import { TableRow } from "./TableRow.js";
+import { STATUSES } from "../utils/constants.js";
 
 /* 
 * postData function
@@ -29,7 +29,7 @@ const postData = (url, data) => {
 * DBContent component
 We will keep it as a function and not a class inorder to use react hooks
 */
-export default function DBContent(props) {
+export function DBContent(props) {
   /* 
   ! Shorthand variables
   Creating shorthand variables from the props being passed from the app component

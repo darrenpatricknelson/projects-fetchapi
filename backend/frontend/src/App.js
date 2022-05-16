@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
-import DBContent from "./components/DBContent.js";
-import { Button } from "react-bootstrap";
+import { DBContent } from "./components/DBContent.js";
 
 /* 
 * fetchTaskData fucntion
@@ -29,7 +28,7 @@ export const fetchTaskData = async () => {
 * App component 
 Contains all the information and state used to display information on our website
  */
-class App extends React.Component {
+export class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -38,7 +37,6 @@ class App extends React.Component {
       updateTask: false,
       data: [],
     };
-    this.handleUpdateTask = this.handleUpdateTask.bind(this);
     this.setData = this.setData.bind(this);
     this.deleteData = this.deleteData.bind(this);
   }
@@ -92,15 +90,9 @@ class App extends React.Component {
     });
   }
 
-  handleUpdateTask() {
-    this.setState({
-      updateTask: !this.state.updateTask,
-    });
-  }
-
   render() {
     // creating shorthand variables from the state property
-    const { error, isLoaded, data, addNewTask } = this.state;
+    const { error, isLoaded, data } = this.state;
 
     // if there is an error, handle it
     // if the data is still loading, let the user know
@@ -157,5 +149,3 @@ class App extends React.Component {
     }
   }
 }
-
-export default App;

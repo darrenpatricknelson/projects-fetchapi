@@ -13,11 +13,11 @@ const content = JSON.parse(fs.readFileSync("./db.json"));
 // there for, I have created a function to sort
 // I will be sorting them by their id since their id's are their task numbers
 // this function will be called when writing the new content back to the file
-const organizeArray = (a, b) => {
-  if (a.id < b.id) {
+const organizeArray = (indexA, indexB) => {
+  if (indexA.id < indexB.id) {
     return -1;
   }
-  if (a.id > b.id) {
+  if (indexA.id > indexB.id) {
     return 1;
   }
   return 0;

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Button } from "react-bootstrap";
-import { STATUSES } from "../utils/constants";
+import { STATUSES } from "../utils/constants.js";
 
-export default function TableRow(props) {
+export function TableRow(props) {
   // shorthand variables taken from props and props.methods
   const { handleDelete, task } = props;
   const { setData, setError, setSuccess } = props.methods;
